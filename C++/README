@@ -1,1 +1,0 @@
-This subfolder contains C++ LeetCode solutions. These are pre-built by build_cpp.py, which copies over an example (definitely over-engineered) project scaffold for our LeetCode problems.
