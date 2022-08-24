@@ -18,6 +18,7 @@ build: scaffold link
 .PHONY: scaffold
 scaffold:
 	@echo Scaffolding folder structure...
+	-@setlocal enableextensions enabledelayedexpansion && mkdir $(BIN) 2>NUL || cd .
 	-@setlocal enableextensions enabledelayedexpansion && mkdir $(addprefix $(OBJ), $(SRC_SUBDIRS)) 2>NUL || cd .
 	@echo Done.
 
