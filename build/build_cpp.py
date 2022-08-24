@@ -7,8 +7,6 @@ def main():
     build_dir = pathlib.Path(__file__).parent.resolve()
     source_path = build_dir / "template_cpp"
     destination_path = build_dir.parent.absolute() / "C++" / folder_name
-    print(source_path)
-    print(destination_path)
     try:
         shutil.copytree(source_path, destination_path)
     except FileExistsError:
