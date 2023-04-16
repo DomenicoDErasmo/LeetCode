@@ -2,3 +2,7 @@
 .vscode/dryrun.log
 .vscode/targets.log
 **/*.exe
+
+# Added by cargo
+
+/target
