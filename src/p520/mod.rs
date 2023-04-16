@@ -5,23 +5,24 @@ struct Config {
 
 impl Config {
     pub fn new(word: &String) -> Config {
-        let first_letter_uppercase = match word.chars().nth(0) {
-            Some(ch) => Some(ch.is_uppercase()),
-            None => None,
-        };
+        let mut uppercases: [Option<bool>; 2] = [None, None];
+        for i in 0..2 {
+            let uppercase_mode = if let Some(x) = word.chars().nth(i) {
+                x.is_uppercase()
+            } else {
+                return Config {
+                    other_letters_uppercase: None,
+                    early_return: Some(true)
+                };
+            };
+            uppercases[i] = Some(uppercase_mode);
+        }
 
-        let (other_letters_uppercase, 
-             early_return) = match (
-                word.chars().nth(1), first_letter_uppercase) {
-            (Some(ch), Some(true)) => (Some(ch.is_uppercase()), None),
-            (Some(ch), Some(false)) => {
-                if ch.is_uppercase() {
-                    (None, Some(false))
-                } else {
-                    (Some(false), None)
-                }
-            }
-            (_, _) => (None, Some(true)),
+        let (other_letters_uppercase, early_return) = 
+                match (uppercases[0], uppercases[1]) {
+            (Some(false), Some(true)) => (None, Some(false)),
+            (_, _) => (uppercases[1], None),
+
         };
 
         Config {other_letters_uppercase, early_return}   
