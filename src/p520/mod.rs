@@ -7,7 +7,8 @@ impl Config {
     pub fn new(word: &String) -> Config {
         let mut uppercases: [Option<bool>; 2] = [None, None];
         for i in 0..2 {
-            let uppercase_mode = if let Some(x) = word.chars().nth(i) {
+            let uppercase_mode = 
+                    if let Some(x) = word.chars().nth(i) {
                 x.is_uppercase()
             } else {
                 return Config {
@@ -18,11 +19,11 @@ impl Config {
             uppercases[i] = Some(uppercase_mode);
         }
 
-        let (other_letters_uppercase, early_return) = 
+        let (other_letters_uppercase, 
+                early_return) = 
                 match (uppercases[0], uppercases[1]) {
             (Some(false), Some(true)) => (None, Some(false)),
             (_, _) => (uppercases[1], None),
-
         };
 
         Config {other_letters_uppercase, early_return}   
