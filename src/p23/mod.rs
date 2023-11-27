@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused)]
+
 struct MergeLists {}
 
 #[derive(PartialEq, Eq, Debug)]
