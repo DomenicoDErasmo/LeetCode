@@ -20,7 +20,6 @@ impl TreeNode {
 
 pub struct Solution{}
 
-// TODO: finish -how to build general case
 impl Solution {
     pub fn all_possible_fbt(n: i32) -> Vec<Option<Rc<RefCell<TreeNode>>>> {
         if n % 2 == 0 {
