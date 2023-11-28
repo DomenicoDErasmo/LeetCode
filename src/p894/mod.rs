@@ -60,12 +60,3 @@ impl Solution {
         }
     }
 }
-
-#[cfg(test)]
-mod p894_tests {
-    use super::*;
-    #[test]
-    fn test_all_possible_fbt() {
-
-    }
-}
