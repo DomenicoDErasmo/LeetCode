@@ -3,6 +3,7 @@ pub mod p164;
 pub mod p520;
 pub mod p771;
 pub mod p894;
+pub mod p1436;
 pub mod p1470;
 pub mod p1512;
 pub mod p1641;
