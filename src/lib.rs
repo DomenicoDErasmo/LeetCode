@@ -23,5 +23,6 @@ pub mod p2798;
 pub mod p2824;
 pub mod p2942;
 pub mod p520;
+pub mod p53;
 pub mod p771;
 pub mod p894;
