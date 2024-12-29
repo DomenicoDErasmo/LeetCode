@@ -6,6 +6,7 @@ pub mod p1431;
 pub mod p1436;
 pub mod p1470;
 pub mod p1512;
+pub mod p152;
 pub mod p164;
 pub mod p1641;
 pub mod p1646;
