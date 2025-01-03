@@ -30,5 +30,6 @@ pub mod p338;
 pub mod p371;
 pub mod p520;
 pub mod p53;
+pub mod p70;
 pub mod p771;
 pub mod p894;
