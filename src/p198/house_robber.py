@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Dict, List
+from typing import List
 
 
 class SolutionRecursive:
