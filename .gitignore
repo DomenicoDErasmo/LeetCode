@@ -1,7 +1,5 @@
-.vscode/configurationCache.log
-.vscode/dryrun.log
-.vscode/targets.log
 **/*.exe
+.vscode/*
 
 # Added by cargo
 
