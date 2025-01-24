@@ -1,30 +1,30 @@
-#include <iostream>
-
-struct ListNode {
+struct ListNode
+{
     int val;
-    ListNode* next;
-    ListNode(): val(0), next(nullptr) {}
-    ListNode(int x): val(x), next(nullptr) {}
-    ListNode(int x, ListNode* next): val(x), next(next) {}
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* reverseList(ListNode* head) {
-        if (!head || !head->next) {return head;}
-        ListNode *prev = nullptr, *temp = head, *next = temp->next;
-        while(next) {
+    ListNode *reverseList(ListNode *head)
+    {
+        if (!head)
+        {
+            return head;
+        }
+
+        ListNode *temp = head, *prev = nullptr;
+        while (temp)
+        {
+            ListNode *next = temp->next;
             temp->next = prev;
             prev = temp;
             temp = next;
-            next = next->next;
         }
-        temp->next = prev;
-        return temp;
+        return prev;
     }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
