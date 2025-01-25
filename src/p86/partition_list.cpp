@@ -1,38 +1,46 @@
 #include <iostream>
 
-struct ListNode {
+struct Node
+{
     int val;
-    ListNode* next;
-    ListNode(): val(0), next(nullptr) {}
-    ListNode(int x): val(x), next(nullptr) {}
-    ListNode(int x, ListNode* next): val(x), next(next) {}
-    ~ListNode() {delete next;}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    Node(int x, Node *next) : val(x), next(next) {}
+    ~Node() { delete next; }
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* partition(ListNode* head, int x) {
-        ListNode* before = new ListNode(0), *before_temp = before, *after = new ListNode(0), *after_temp = after;
-        
-        ListNode *temp = head;
-        while (temp) {
-            if (temp->val < x) {
+    Node *partition(Node *head, int x)
+    {
+        Node *before = new Node(0), *before_temp = before, *after = new Node(0), *after_temp = after;
+
+        Node *temp = head;
+        while (temp)
+        {
+            if (temp->val < x)
+            {
                 before_temp->next = temp;
                 before_temp = before_temp->next;
-            } else {
+            }
+            else
+            {
                 after_temp->next = temp;
                 after_temp = after_temp->next;
             }
             temp = temp->next;
         }
-        
+
         before_temp->next = after->next;
         after_temp->next = nullptr;
         return before->next;
     }
 };
 
-int main() {
+int main()
+{
     std::cout << "Hello world!" << std::endl;
     return 0;
 }

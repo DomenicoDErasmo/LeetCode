@@ -1,32 +1,46 @@
 #include <iostream>
 
-struct ListNode {
+struct Node
+{
     int val;
-    ListNode *next;
-    ListNode(): val(0), next(nullptr) {}
-    ListNode(int x): val(x), next(nullptr) {}
-    ~ListNode() {delete next;}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    ~Node() { delete next; }
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        if (headA == headB) {return headA;}
-        
-        if (getLength(headA) > getLength(headB)) {
+    Node *getIntersectionNode(Node *headA, Node *headB)
+    {
+        if (headA == headB)
+        {
+            return headA;
+        }
+
+        if (getLength(headA) > getLength(headB))
+        {
             return intersectionHelper(headA, headB);
-        } else {
+        }
+        else
+        {
             return intersectionHelper(headB, headA);
         }
     }
+
 private:
-    ListNode* intersectionHelper(ListNode* larger, ListNode* smaller) {
-        ListNode *largerTemp = larger;
-        
-        while (largerTemp) {
-            ListNode *smallerTemp = smaller;
-            while (smallerTemp) {
-                if (largerTemp == smallerTemp) {
+    Node *intersectionHelper(Node *larger, Node *smaller)
+    {
+        Node *largerTemp = larger;
+
+        while (largerTemp)
+        {
+            Node *smallerTemp = smaller;
+            while (smallerTemp)
+            {
+                if (largerTemp == smallerTemp)
+                {
                     return largerTemp;
                 }
                 smallerTemp = smallerTemp->next;
@@ -35,22 +49,25 @@ private:
         }
         return nullptr;
     }
-    
-    int getLength(ListNode* head) {
+
+    int getLength(Node *head)
+    {
         int result = 0;
-        ListNode* temp = new ListNode();
+        Node *temp = new Node();
         temp->next = head;
-        
-        while (temp->next) {
+
+        while (temp->next)
+        {
             result++;
             temp = temp->next;
         }
-        
+
         return result;
     }
 };
 
-int main() {
+int main()
+{
     std::cout << "Hello world!" << std::endl;
     return 0;
 }

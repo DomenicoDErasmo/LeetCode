@@ -1,23 +1,30 @@
 #include <iostream>
 #include <set>
 
-struct ListNode {
+struct Node
+{
     int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+    Node *next;
+    Node(int x) : val(x), next(NULL) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode *detectCycle(ListNode *head) {
-        ListNode* result = nullptr;
-        std::set<ListNode*> visited;
-        ListNode *temp = head;
-        while (temp) {
-            if (visited.find(temp) == visited.end()) {
+    Node *detectCycle(Node *head)
+    {
+        Node *result = nullptr;
+        std::set<Node *> visited;
+        Node *temp = head;
+        while (temp)
+        {
+            if (visited.find(temp) == visited.end())
+            {
                 visited.insert(temp);
                 temp = temp->next;
-            } else {
+            }
+            else
+            {
                 result = temp;
                 break;
             }
@@ -26,7 +33,8 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     std::cout << "Hello world!" << std::endl;
     return 0;
 }

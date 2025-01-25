@@ -1,36 +1,46 @@
 #include <iostream>
 
-struct ListNode {
+struct Node
+{
     int val;
-    ListNode *next;
-    ListNode(): val(0), next(nullptr) {}
-    ListNode(int x): val(x), next(nullptr) {}
-    ListNode(int x, ListNode* next): val(x), next(next) {}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    Node(int x, Node *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* sortList(ListNode* head) {
-        if (!head || !head->next) {return head;}
+    Node *sortList(Node *head)
+    {
+        if (!head || !head->next)
+        {
+            return head;
+        }
 
-        ListNode *temp = nullptr, *slow = head, *fast = head;
+        Node *temp = nullptr, *slow = head, *fast = head;
 
         // get middle
-        while (fast && fast->next) {
+        while (fast && fast->next)
+        {
             temp = slow;
             slow = slow->next;
             fast = fast->next->next;
         }
         temp->next = nullptr;
-        ListNode* l1 = sortList(head);
-        ListNode *l2 = sortList(slow);
+        Node *l1 = sortList(head);
+        Node *l2 = sortList(slow);
         return mergeList(l1, l2);
     }
+
 private:
-    ListNode* mergeList(ListNode*& l1, ListNode*& l2) {
-        ListNode *result = new ListNode(0, nullptr), *current = result;
-        while (l1 && l2) {
-            ListNode** chosen = l1->val < l2->val ? &l1 : &l2;
+    Node *mergeList(Node *&l1, Node *&l2)
+    {
+        Node *result = new Node(0, nullptr), *current = result;
+        while (l1 && l2)
+        {
+            Node **chosen = l1->val < l2->val ? &l1 : &l2;
             current->next = *chosen;
             *chosen = (*chosen)->next;
             current = current->next;
@@ -40,7 +50,8 @@ private:
     }
 };
 
-int main() {
+int main()
+{
     std::cout << "Hello world!" << std::endl;
     return 0;
 }

@@ -1,26 +1,26 @@
-struct ListNode
+struct Node
 {
     int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    Node(int x, Node *next) : val(x), next(next) {}
 };
 
 class Solution
 {
 public:
-    ListNode *reverseList(ListNode *head)
+    Node *reverseList(Node *head)
     {
         if (!head)
         {
             return head;
         }
 
-        ListNode *temp = head, *prev = nullptr;
+        Node *temp = head, *prev = nullptr;
         while (temp)
         {
-            ListNode *next = temp->next;
+            Node *next = temp->next;
             temp->next = prev;
             prev = temp;
             temp = next;

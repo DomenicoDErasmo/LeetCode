@@ -1,21 +1,21 @@
-struct ListNode
+struct Node
 {
     int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(nullptr) {}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    Node(int x, Node *next) : val(x), next(nullptr) {}
 };
 
 class Solution
 {
 public:
-    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
+    Node *mergeTwoLists(Node *list1, Node *list2)
     {
-        ListNode *prev = new ListNode(), **head = &(prev->next);
+        Node *prev = new Node(), **head = &(prev->next);
         while (list1 && list2)
         {
-            ListNode **temp = &(list1->val < list2->val ? list1 : list2);
+            Node **temp = &(list1->val < list2->val ? list1 : list2);
             prev->next = *temp;
             prev = prev->next;
             *temp = (*temp)->next;

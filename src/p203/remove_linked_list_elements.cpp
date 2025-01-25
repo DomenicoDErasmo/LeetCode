@@ -1,25 +1,32 @@
 #include <iostream>
 
-struct ListNode {
+struct Node
+{
     int val;
-    ListNode *next;
-    ListNode(): val(0), next(nullptr) {}
-    ListNode(int x): val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next): val(x), next(next) {}
-    ~ListNode() {delete next;}
+    Node *next;
+    Node() : val(0), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
+    Node(int x, Node *next) : val(x), next(next) {}
+    ~Node() { delete next; }
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* removeElements(ListNode* head, int val) {
-        if(nullptr == head) {return head;}
+    Node *removeElements(Node *head, int val)
+    {
+        if (nullptr == head)
+        {
+            return head;
+        }
 
-        head->next = removeElements(head->next,val);
+        head->next = removeElements(head->next, val);
         return head->val == val ? head->next : head;
     }
 };
 
-int main() {
+int main()
+{
     std::cout << "Hello world!" << std::endl;
     return 0;
 }
