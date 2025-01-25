@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 struct Node
 {
@@ -27,17 +28,7 @@ public:
             return -1;
         }
 
-        Node *temp = *head;
-
-        for (int i = 0; i < index; i++)
-        {
-            if (!temp)
-            {
-                return -1;
-            }
-            temp = temp->next;
-        }
-
+        Node *temp = getNodeAtIndex(index);
         return temp->val;
     }
 
@@ -64,9 +55,8 @@ public:
             return;
         }
 
-        Node *new_tail = new Node(val);
+        Node *new_tail = new Node(val, *tail, nullptr);
         Node **new_tail_pointer = new Node *(new_tail);
-        new_tail->prev = *tail;
         (*tail)->next = new_tail;
 
         tail = new_tail_pointer;
@@ -94,11 +84,7 @@ public:
             return;
         }
 
-        Node *temp = *head;
-        for (int i = 0; i < index; i++)
-        {
-            temp = temp->next;
-        }
+        Node *temp = getNodeAtIndex(index);
 
         Node *original_prev = temp->prev;
         Node *to_add = new Node(val, original_prev, temp);
@@ -106,6 +92,15 @@ public:
         temp->prev = to_add;
         original_prev->next = to_add;
     }
+
+#define DELETE_AT_END(end, field, other_field) \
+    Node *to_delete = *end;                    \
+    Node *new_end = (*end)->field;             \
+    Node *new_opposite = new_end->field;       \
+    *end = new_end;                            \
+    (*end)->field = new_opposite;              \
+    (*end)->other_field = nullptr;             \
+    delete to_delete;
 
     void deleteAtIndex(int index)
     {
@@ -128,13 +123,7 @@ public:
         // delete head
         if (index == 0)
         {
-            Node *to_delete = *head;
-            Node *new_head = (*head)->next;
-            Node *new_next = new_head->next;
-            *head = new_head;
-            (*head)->next = new_next;
-            (*head)->prev = nullptr;
-            delete to_delete;
+            DELETE_AT_END(head, next, prev);
 
             return;
         }
@@ -142,23 +131,13 @@ public:
         // delete tail
         if (index == length - 1)
         {
-            Node *to_delete = *tail;
-            Node *new_tail = (*tail)->prev;
-            Node *new_prev = new_tail->prev;
-            *tail = new_tail;
-            (*tail)->prev = new_prev;
-            (*tail)->next = nullptr;
-            delete to_delete;
+            DELETE_AT_END(tail, prev, next);
 
             return;
         }
 
         // general case
-        Node *to_delete = *head;
-        for (int i = 0; i < index; i++)
-        {
-            to_delete = to_delete->next;
-        }
+        Node *to_delete = getNodeAtIndex(index);
 
         Node *prev = to_delete->prev;
         Node *next = to_delete->next;
@@ -183,16 +162,22 @@ public:
         return false;
     }
 
-    void printList()
+    std::string toString()
     {
+        std::string result;
+
         Node *temp = *head;
-        std::cout << "List: [";
+        result.append("List: [");
         while (temp && temp->next)
         {
-            std::cout << temp->val << ", ";
+            result.append(std::to_string(temp->val));
+            result.append(", ");
             temp = temp->next;
         }
-        std::cout << (temp ? temp->val : ' ') << "]" << std::endl;
+        result.append(temp ? std::to_string(temp->val) : " ");
+        result.append("]\n");
+
+        return result;
     }
 
     int getLength()
@@ -210,6 +195,18 @@ public:
             length++;
         }
         return length;
+    }
+
+    Node *getNodeAtIndex(int index)
+    {
+        Node *temp = *head;
+
+        for (int i = 0; i < index; i++)
+        {
+            temp = temp->next;
+        }
+
+        return temp;
     }
 
 private:
