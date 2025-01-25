@@ -36,7 +36,7 @@ public:
 
         Node *new_head = new Node(val, nullptr, head);
         head->prev = new_head;
-        &head = new_head;
+        head = new_head;
     }
 
     void addAtTail(int val)
