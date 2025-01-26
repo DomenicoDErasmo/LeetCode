@@ -5,6 +5,7 @@
     "rust-analyzer.check.extraArgs": [],
     "rust-analyzer.showUnlinkedFileNotification": false,
     "files.associations": {
-        "new": "cpp"
+        "new": "cpp",
+        "functional": "cpp"
     },
 }
