@@ -1,36 +1,33 @@
-#include <iostream>
-
-int guess(int num) {
-    // Example definition so this compiles
-    // The real implementation of this might fetch a value from a config file and then compare the guess to that.
-    if (num < 4) {
-        return -1;
-    } else if (num > 4) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-class Solution {
+class Solution
+{
 public:
-    int guessNumber(int n) {
-        size_t low = 1, high = n;
-        while(low <= high) {
-            size_t mid = (low + high) / 2;
-            if (guess(mid) == -1) {
+    int guessNumber(int n)
+    {
+        int low = 1, high = n;
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            int guess_result = guess(mid);
+            if (guess_result == -1)
+            {
                 high = mid - 1;
-            } else if (guess(mid) == 1) {
+            }
+            else if (guess_result == 1)
+            {
                 low = mid + 1;
-            } else {
+            }
+            else
+            {
                 return mid;
             }
         }
         return -1;
     }
-};
 
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
+private:
+    // stub to avoid squigglies
+    int guess(int n)
+    {
+        return 0;
+    }
+};
