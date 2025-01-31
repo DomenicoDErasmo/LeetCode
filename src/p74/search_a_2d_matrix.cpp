@@ -1,44 +1,68 @@
-#include <iostream>
 #include <vector>
 
-class Solution {
+class Solution
+{
 public:
-    bool searchMatrix(std::vector<std::vector<int>>& matrix, int target) {
-        // get the row
-        size_t row = binaryGetRow(matrix, target);
-        if (row == matrix.size()) return false;
-        
-        // search the row
-        return binaryRowSearch(matrix[row], target);
+    bool searchMatrix(std::vector<std::vector<int>> &matrix, int target)
+    {
+        int row = findRow(matrix, target);
+
+        if (row == -1)
+        {
+            return false;
+        }
+
+        int col = findCol(matrix[row], target);
+
+        return col != -1;
     }
+
 private:
-    size_t binaryGetRow(const std::vector<std::vector<int>>& matrix, const int& target) {
-        int start = 0, end = matrix.size() - 1;
-        while (start <= end) {
-            // safe in case start + end goes over int limit, although that shouldn't happen for this problem
-            int mid = start + (end - start) / 2;
-            if (matrix[mid][0] <= target && target <= matrix[mid][matrix[mid].size() - 1]) return mid;
-            else if (matrix[mid][matrix[mid].size() - 1] < target) start = mid + 1;
-            else end = mid - 1;
+    int findRow(const std::vector<std::vector<int>> &matrix, int target)
+    {
+        int top = 0, bottom = matrix.size() - 1;
+
+        while (top <= bottom)
+        {
+            int middle_row = (top + bottom) / 2;
+            int leftmost = matrix[middle_row].front(), rightmost = matrix[middle_row].back();
+            if (target < leftmost)
+            {
+                bottom = middle_row - 1;
+                continue;
+            }
+
+            if (target > rightmost)
+            {
+                top = middle_row + 1;
+                continue;
+            }
+
+            return middle_row;
         }
-        // setting some illegal value for returning false
-        return matrix.size();
+        return -1;
     }
-    
-    bool binaryRowSearch(const std::vector<int>& row, const int& target) {
-        int start = 0, end = row.size() - 1;
-        while (start <= end) {
-            // safe in case start + end goes over int limit, although that shouldn't happen for this problem
-            int mid = start + (end - start)  / 2;
-            if (row[mid] == target) return true;
-            else if (row[mid] < target) start = mid + 1;
-            else end = mid - 1;
+
+    int findCol(const std::vector<int> &row, int target)
+    {
+        int left = 0, right = row.size() - 1;
+        while (left <= right)
+        {
+            int mid = (left + right) / 2, value = row[mid];
+            if (target < value)
+            {
+                right = mid - 1;
+                continue;
+            }
+
+            if (target > value)
+            {
+                left = mid + 1;
+                continue;
+            }
+
+            return mid;
         }
-        return false;
+        return -1;
     }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
