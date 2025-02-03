@@ -1,24 +1,29 @@
-#include <iostream>
+#include <string>
 #include <vector>
 
 class Solution {
-public:
-    void helper(int open, int close, int n, std::string current, std::vector<std::string>& result) {
-        if (current.length() == n*2) {
-            result.push_back(current);
-            return;
-        }
-        if(open < n) {helper(open+1,close,n,current+"(", result);}
-        if(close < open) {helper(open,close+1,n,current+")", result);}
-    }
+   public:
     std::vector<std::string> generateParenthesis(int n) {
+        return helper("", n, n);
+    }
+
+   private:
+    std::vector<std::string> helper(std::string current, int leftRemaining, int rightRemaining) {
+        if (leftRemaining < 0 || rightRemaining < 0 || rightRemaining < leftRemaining) {
+            return {};
+        }
+        if (leftRemaining == 0 && rightRemaining == 0) {
+            return {current};
+        }
+
+        std::vector<std::string> leftResult = helper(current + '(', leftRemaining - 1, rightRemaining);
+        std::vector<std::string> rightResult = helper(current + ')', leftRemaining, rightRemaining - 1);
+
         std::vector<std::string> result;
-        helper(0,0,n,"", result);
+        result.reserve(leftResult.size() + rightResult.size());
+        result.insert(result.end(), leftResult.begin(), leftResult.end());
+        result.insert(result.end(), rightResult.begin(), rightResult.end());
+
         return result;
     }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
