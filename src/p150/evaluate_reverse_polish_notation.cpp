@@ -1,43 +1,69 @@
-#include <iostream>
-#include <stack>
-#include <vector>
 #include <string>
-#include <functional>
+#include <vector>
 
-class Solution {
-public:
-    int evalRPN(std::vector<std::string>& tokens) {
-        std::stack<std::string> nums;
-        for (int i = 0; i < tokens.size(); i++) {
-            std::string token = tokens[i];
-            if (isOperator(token)) {
-                std::function<long(long, long)> op = operatorFromString(token);
+class Stack {
+   public:
+    Stack() : _stack({}) {}
 
-                long second = std::stol(nums.top());
-                nums.pop();
-                long first = std::stol(nums.top());
-                nums.pop();
+    void push(std::string val) { _stack.push_back(val); }
 
-                nums.push(std::to_string(op(first, second)));
-            } else {
-                nums.push(token);
-            }
-        }
-        return std::stoi(nums.top());
+    std::string top() { return _stack.back(); }
+
+    std::string pop() {
+        std::string to_return = top();
+        _stack.pop_back();
+        return to_return;
     }
-private:
-    bool isOperator(const std::string& token) {
-        return token == "+" || token == "-" || token == "*" || token == "/";
-    }
-    std::function<long(long, long)> operatorFromString(const std::string& op) {
-        if (op == "+") {return std::plus<long>();} 
-        else if (op == "-") {return std::minus<long>();}
-        else if (op == "*") {return std::multiplies<long>();}
-        else {return std::divides<long>();}
-    }
+
+    bool empty() { return _stack.empty(); }
+
+   private:
+    std::vector<std::string> _stack;
 };
 
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
+class Solution {
+   public:
+    int evalRPN(std::vector<std::string> &tokens) {
+        Stack stack;
+
+        for (std::string token : tokens) {
+            if (!isOperator(token)) {
+                stack.push(token);
+            } else {
+                int right = std::stoi(stack.pop()), left = std::stoi(stack.pop());
+                auto operation = operatorToFunction(token);
+                int expression = (this->*operation)(left, right);
+                stack.push(std::to_string(expression));
+            }
+        }
+
+        return std::stoi(stack.top());
+    }
+
+   private:
+    int (Solution::*operatorToFunction(std::string str))(int, int) {
+        if (str == "+") {
+            return &Solution::add;
+        } else if (str == "-") {
+            return &Solution::subtract;
+        } else if (str == "*") {
+            return &Solution::multiply;
+        } else if (str == "/") {
+            return &Solution::divide;
+        } else {
+            return nullptr;
+        }
+    }
+
+    bool isOperator(std::string str) {
+        return str == "+" || str == "-" || str == "*" || str == "/";
+    }
+
+    int add(int left, int right) { return left + right; }
+
+    int subtract(int left, int right) { return left - right; }
+
+    int multiply(int left, int right) { return left * right; }
+
+    int divide(int left, int right) { return left / right; }
+};
