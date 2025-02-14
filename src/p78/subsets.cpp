@@ -1,31 +1,39 @@
-#include <iostream>
 #include <vector>
-#include <set>
 
 class Solution {
-public:
+   public:
     std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
-        std::set<std::vector<int>> uniques = {std::vector<int>()};
-        helper(uniques, nums, {}, 0);
-        
-        std::vector<std::vector<int>> result;
-        for (std::set<std::vector<int>>::iterator it = uniques.begin(); it != uniques.end(); it++) {
-            result.push_back(*it);
+        std::vector<std::vector<int>> current = {{}};
+        return helper(nums, 0, current);
+    }
+
+   private:
+    std::vector<std::vector<int>> helper(
+        std::vector<int>& nums, int index,
+        std::vector<std::vector<int>>& current) {
+        // base case: can't go anymore
+        if (index == nums.size()) {
+            return current;
         }
+
+        // case where we don't pick - all of current stays the same
+        std::vector<std::vector<int>> skip = helper(nums, index + 1, current);
+
+        // case where we pick - push onto all of current
+        for (int i = 0; i < current.size(); i++) {
+            current[i].push_back(nums[index]);
+        }
+        std::vector<std::vector<int>> pick = helper(nums, index + 1, current);
+
+        // back out backtracking
+        for (int i = 0; i < current.size(); i++) {
+            current[i].pop_back();
+        }
+
+        std::vector<std::vector<int>> result;
+        result.insert(result.end(), skip.begin(), skip.end());
+        result.insert(result.end(), pick.begin(), pick.end());
+
         return result;
     }
-private:
-    void helper(std::set<std::vector<int>>& uniques, const std::vector<int>& nums, std::vector<int> base, int start) {
-        for (size_t i = start; i < nums.size(); i++) {
-            std::vector<int> current = base;
-            current.push_back(nums[i]);
-            if (uniques.find(current) == uniques.end()) uniques.insert(current);
-            helper(uniques, nums, current, i + 1);
-        }
-    }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
