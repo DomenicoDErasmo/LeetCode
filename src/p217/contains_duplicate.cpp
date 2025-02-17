@@ -1,20 +1,16 @@
-#include <iostream>
-#include <set>
 #include <vector>
+#include <set>
 
 class Solution {
 public:
     bool containsDuplicate(std::vector<int>& nums) {
-        std::set<int> uniques;
-        for (size_t i = 0; i < nums.size(); i++) {
-            if (uniques.find(nums[i]) == uniques.end()) {uniques.insert(nums[i]);}
-            else {return true;}
+        std::set<int> uniqueNums;
+        for (int num : nums) {
+            if (uniqueNums.find(num) != uniqueNums.end()) {
+                return true;
+            }
+            uniqueNums.insert(num);
         }
         return false;
     }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
