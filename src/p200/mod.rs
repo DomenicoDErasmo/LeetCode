@@ -33,12 +33,7 @@ impl Solution {
                     visited[pair.i as usize][pair.j as usize] = true;
                     queue.push_back(pair);
 
-                    loop {
-                        let current_pair = match queue.pop_front() {
-                            Some(node) => node,
-                            None => {break;},
-                        };
-
+                    while let Some(current_pair) = queue.pop_front() {
                         for direction in DIRECTIONS.iter() {
                             let new_pair = Pair {
                                 i: current_pair.i + direction.i,
@@ -61,7 +56,7 @@ impl Solution {
         result
     }
 
-    fn is_unvisited_land(pair: &Pair, grid: &Vec<Vec<char>>, visited: &Vec<Vec<bool>>) -> bool {
+    fn is_unvisited_land(pair: &Pair, grid: &[Vec<char>], visited: &[Vec<bool>]) -> bool {
         !visited[pair.i as usize][pair.j as usize] && grid[pair.i as usize][pair.j as usize] == '1'
     }
 }
