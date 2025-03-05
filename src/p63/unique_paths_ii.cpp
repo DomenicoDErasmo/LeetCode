@@ -1,51 +1,42 @@
-#include <iostream>
 #include <vector>
 
 class Solution {
-public:
-    int uniquePathsWithObstacles(std::vector<std::vector<int>>& obstacle_grid) {
-        // init table - all zeroes except for bottom-right cell (unless it isn't reachable)
-        std::vector<std::vector<long>> table;
-        for (size_t i = 0; i < obstacle_grid.size(); i++) {
-            std::vector<long> row(obstacle_grid[0].size(), 0);
-            table.push_back(row);
+   public:
+    int uniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        if (obstacleGrid[0][0] == 1) {
+            return 0;
         }
-        if (!obstacle_grid[obstacle_grid.size() - 1][obstacle_grid[0].size() - 1]) {table[table.size() - 1][table[0].size() - 1] = 1;}
-        
-        // base case: right side
-        for (int i = obstacle_grid.size() - 2; i >= 0; i--) {
-            if (obstacle_grid[i][obstacle_grid[0].size() - 1]) {
-                table[i][obstacle_grid[0].size() - 1] = 0;
-            } else {
-                table[i][obstacle_grid[0].size() - 1] = table[i+1][obstacle_grid[0].size() - 1];
+
+        int n = obstacleGrid[0].size();
+
+        std::vector<std::vector<int>> subProblems(m + 1,
+                                                  std::vector<int>(n + 1, 0));
+        // base cases
+        bool foundObstacleInStartRow = false;
+        for (int i = 1; i < m + 1; i++) {
+            if (obstacleGrid[i - 1][0] == 1) {
+                foundObstacleInStartRow = true;
+            }
+            subProblems[i][1] = foundObstacleInStartRow ? 0 : 1;
+        }
+
+        bool foundObstacleInStartCol = false;
+        for (int j = 1; j < n + 1; j++) {
+            if (obstacleGrid[0][j - 1] == 1) {
+                foundObstacleInStartCol = true;
+            }
+            subProblems[1][j] = foundObstacleInStartCol ? 0 : 1;
+        }
+
+        for (int i = 2; i < m + 1; i++) {
+            for (int j = 2; j < n + 1; j++) {
+                subProblems[i][j] =
+                    obstacleGrid[i - 1][j - 1] == 1
+                        ? 0
+                        : subProblems[i - 1][j] + subProblems[i][j - 1];
             }
         }
-        
-        // base case: bottom side
-        for (int i = obstacle_grid[0].size() - 2; i >= 0; i--) {
-            if (obstacle_grid[obstacle_grid.size() - 1][i]) {
-                table[obstacle_grid.size() - 1][i] = 0;
-            } else {
-                table[obstacle_grid.size() - 1][i] = table[obstacle_grid.size() - 1][i+1];
-            }
-        }
-        
-        // general case: if an obstacle, mark with 0, otherwise add bottom and right
-        for (int i = obstacle_grid.size() - 2; i >= 0; i--) {
-            for (int j = obstacle_grid[0].size() - 2; j >= 0; j--) {
-                if (obstacle_grid[i][j]) {
-                    table[i][j] = 0;
-                } else {
-                    table[i][j] = table[i+1][j] + table[i][j+1];
-                }
-            }
-        }
-        
-        return table[0][0];
+        return subProblems.back().back();
     }
 };
-
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
