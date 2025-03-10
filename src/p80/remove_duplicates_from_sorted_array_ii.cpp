@@ -1,31 +1,29 @@
-#include <iostream>
-#include <vector>
+#include <vector> // vector
 
 class Solution {
-public:
-    int removeDuplicates(std::vector<int>& nums) {
-        if (nums.size() <= 2) return nums.size();
-        
-        int result = nums.size(), i = 2, two_ago = nums[0], prev = nums[1];
-        while (i < result) {
-            int current = nums[i];
-            if ((two_ago == prev) && (prev == current)) {
-                for (size_t j = i; j < nums.size() - 1; j++) {
-                    std::swap(nums[j], nums[j+1]);
-                }
-                i--;
-                result--;
-            } else {
-                two_ago = nums[i-1];
-                prev = nums[i];
-            }
-            i++;
-        }
-        return result;
-    }
-};
+    public:
+        int removeDuplicates(std::vector<int>& nums) {
+            int right = nums.size() - 1;
+            int previous = nums[0];
+            bool foundSecond = false;
 
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
+            for (int left = 1; left < nums.size(); left++) {
+                if (nums[left] != nums[left-1]) {
+                    previous = nums[left];
+                    foundSecond = false;
+                    continue;
+                }
+
+                if (!foundSecond) {
+                    foundSecond = true;
+                    continue;
+                }
+
+                nums.erase(nums.begin() + left);
+                left--;
+                right--;
+            }
+
+            return right + 1;
+        }
+};
