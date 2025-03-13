@@ -1,27 +1,19 @@
-#include <iostream>
-#include <vector>
+#include <vector>  //vector
 
 class NumArray {
-public:
+   public:
     NumArray(std::vector<int>& nums) {
-        nums_arr = new int[nums.size()];
-        for (size_t i = 0; i < nums.size(); i++) {
-            nums_arr[i] = nums[i];
+        std::vector<int> toBuildPrefixSum = {nums.front()};
+        for (int i = 1; i < nums.size(); i++) {
+            toBuildPrefixSum.push_back(toBuildPrefixSum[i - 1] + nums[i]);
         }
+        prefixSum = toBuildPrefixSum;
     }
-    
-    int sumRange(int left, int right) {
-        int result = 0;
-        for (int i = left; i <= right; i++) {
-            result += nums_arr[i];
-        }
-        return result;
-    }
-private:
-    int* nums_arr;
-};
 
-int main() {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
-}
+    int sumRange(int left, int right) {
+        return prefixSum[right] - (left == 0 ? 0 : prefixSum[left - 1]);
+    }
+
+   private:
+    std::vector<int> prefixSum;
+};
