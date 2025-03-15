@@ -23,6 +23,7 @@ class Solution {
             return nullptr;
         }
 
+        // why does this work?
         fast = head;
         while (fast != slow) {
             fast = fast->next;
