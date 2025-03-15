@@ -5,9 +5,8 @@ impl Solution {
         let mut result = vec![];
 
         for (i, word) in words.iter().enumerate() {
-            match word.find(x) {
-                Some(_) => result.push(i as i32),
-                None => {}
+            if word.find(x).is_some() {
+                result.push(i as i32)
             }
         }
 
@@ -22,9 +21,9 @@ mod p2942_tests {
     fn test_find_words_containing() {
         assert_eq!(
             Solution::find_words_containing(
-                vec!["leet".to_owned(), "code".to_owned()], 
+                vec!["leet".to_owned(), "code".to_owned()],
                 'e'
-            ), 
+            ),
             vec![0, 1]
         );
     }
