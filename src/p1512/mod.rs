@@ -8,16 +8,20 @@ impl Solution {
         for (_, value) in frequencies.iter() {
             result += (value * (value - 1)) / 2;
         }
-        
+
         result
     }
 
-    fn get_frequencies(nums: &Vec<i32>) -> std::collections::HashMap::<i32, i32> {
+    fn get_frequencies(nums: &[i32]) -> std::collections::HashMap<i32, i32> {
         let mut frequencies = std::collections::HashMap::<i32, i32>::new();
-        for i in 0..nums.len() {
-            match frequencies.get_mut(&nums[i]) {
-                Some(result) => {*result = *result + 1;},
-                None => {frequencies.insert(nums[i], 1);},
+        for num in nums {
+            match frequencies.get_mut(num) {
+                Some(result) => {
+                    *result += 1;
+                }
+                None => {
+                    frequencies.insert(*num, 1);
+                }
             }
         }
         frequencies
@@ -35,8 +39,12 @@ mod p1512_tests {
 
     #[test]
     fn test_get_frequencies() {
-        let answer = Solution::get_frequencies(&vec![1, 2, 3, 1, 1, 3]);
-        let expected = std::collections::HashMap::<i32, i32>::from([(1, 3), (2, 1), (3, 2)]);
+        let answer = Solution::get_frequencies(&[1, 2, 3, 1, 1, 3]);
+        let expected = std::collections::HashMap::<i32, i32>::from([
+            (1, 3),
+            (2, 1),
+            (3, 2),
+        ]);
         assert_eq!(expected, answer);
     }
 }
