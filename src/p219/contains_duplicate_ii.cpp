@@ -1,22 +1,21 @@
+#include <cstdlib>        // abs
 #include <unordered_set>  // unordered_set
 #include <vector>         // vector
 
 class Solution {
    public:
     bool containsNearbyDuplicate(std::vector<int>& nums, int k) {
-        std::unordered_set<int> valsInWindow;
-        int left = 0, right = 0;
-        for (int num : nums) {
-            if (right - left > k) {
-                valsInWindow.erase(nums[left]);
+        int left = 0;
+        std::unordered_set<int> values;
+        for (int right = 0; right < nums.size(); right++) {
+            if (std::abs(right - left) > k) {
+                values.erase(nums[left]);
                 left++;
             }
-            
-            right++;
-            if (valsInWindow.find(num) != valsInWindow.end()) {
+            if (left != right && values.count(nums[right])) {
                 return true;
             }
-            valsInWindow.insert(num);
+            values.insert(nums[right]);
         }
         return false;
     }
