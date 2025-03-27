@@ -3,23 +3,22 @@
 class Solution {
    public:
     int numOfSubarrays(std::vector<int>& arr, int k, int threshold) {
-        if (arr.size() < k) {
-            return 0;
-        }
+        int sumThreshold = k * threshold;
+        int left = 0, currentSum = 0, result = 0;
+        for (int i = 0; i < arr.size(); i++) {
+            if (getWindowSize(left, i) > k) {
+                currentSum -= arr[left];
+                left++;
+            }
 
-        int left = 0, target = threshold * k, sum = 0;
-        for (int i = 0; i < k; i++) {
-            sum += arr[i];
-        }
-        int result = (sum >= target);
-        for (int i = k; i < arr.size(); i++) {
-            sum -= arr[left];
-            left++;
-            sum += arr[i];
-            if (sum >= target) {
+            currentSum += arr[i];
+            if (getWindowSize(left, i) == k && currentSum >= sumThreshold) {
                 result++;
             }
         }
         return result;
     }
+
+   private:
+    int getWindowSize(int left, int right) { return right - left + 1; }
 };
