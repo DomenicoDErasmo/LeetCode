@@ -1,58 +1,29 @@
-#include <vector>  // vector
+#include <iostream>  // cout, endl
+#include <optional>  // optional
+#include <vector>    // min, vector
 
 class Solution {
    public:
     int minSubArrayLen(int target, std::vector<int>& nums) {
-        auto [right, subArraySum] = initRightAndSum(target, nums);
+        int left = 0, currentSum = 0;
+        std::optional<int> minLength = std::nullopt;
 
-        if (subArraySum < target) {
-            return 0;
+        for (int i = 0; i < nums.size(); i++) {
+            currentSum += nums[i];
+            if (currentSum < target) {
+                continue;
+            }
+
+            while (currentSum - nums[left] >= target) {
+                currentSum -= nums[left];
+                left++;
+            }
+            int currentLength = i - left + 1;
+            minLength = minLength.has_value()
+                            ? std::min(currentLength, minLength.value())
+                            : currentLength;
         }
 
-        int minSize = right, left = 0;
-
-        while (right < nums.size()) {
-            subArraySum += nums[right];
-            right++;
-
-            std::pair<int, int> leftAndSum =
-                updateLeftAndSum(target, nums, left, subArraySum);
-            left = leftAndSum.first;
-            subArraySum = leftAndSum.second;
-
-            minSize = std::min(minSize, right - left);
-        }
-
-        std::pair<int, int> leftAndSum =
-            updateLeftAndSum(target, nums, left, subArraySum);
-        left = leftAndSum.first;
-        subArraySum = leftAndSum.second;
-
-        minSize = std::min(minSize, right - left);
-
-        return minSize;
-    }
-
-   private:
-    std::pair<int, int> updateLeftAndSum(int target,
-                                         const std::vector<int>& nums, int left,
-                                         int subArraySum) {
-        while ((subArraySum - nums[left]) >= target) {
-            subArraySum -= nums[left];
-            left++;
-        }
-        return {left, subArraySum};
-    }
-
-    std::pair<int, int> initRightAndSum(int target,
-                                        const std::vector<int>& nums) {
-        int right = 0, subArraySum = 0;
-
-        while (subArraySum < target && right < nums.size()) {
-            subArraySum += nums[right];
-            right++;
-        }
-
-        return {right, subArraySum};
+        return minLength.value_or(0);
     }
 };
