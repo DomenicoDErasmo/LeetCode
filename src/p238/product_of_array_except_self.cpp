@@ -3,20 +3,16 @@
 class Solution {
    public:
     std::vector<int> productExceptSelf(std::vector<int>& nums) {
-        std::vector<int> prefixProducts(nums.size(), 1),
-            suffixProducts(nums.size(), 1);
-
+        int n = nums.size();
+        std::vector<int> prefixProduct(n, 1), suffixProduct(n, 1);
         for (int i = 1; i < nums.size(); i++) {
-            prefixProducts[i] = prefixProducts[i - 1] * nums[i - 1];
+            prefixProduct[i] = prefixProduct[i - 1] * nums[i - 1];
+            suffixProduct[nums.size() - i - 1] =
+                suffixProduct[nums.size() - i] * nums[nums.size() - i];
         }
-
-        for (int i = nums.size() - 2; i >= 0; i--) {
-            suffixProducts[i] = suffixProducts[i + 1] * nums[i + 1];
-        }
-
-        std::vector<int> result;
+        std::vector<int> result(n, 1);
         for (int i = 0; i < nums.size(); i++) {
-            result.push_back(prefixProducts[i] * suffixProducts[i]);
+            result[i] *= prefixProduct[i] * suffixProduct[i];
         }
         return result;
     }
