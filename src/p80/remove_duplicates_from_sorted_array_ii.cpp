@@ -1,29 +1,25 @@
-#include <vector> // vector
+#include <unordered_map>  // unordereunordered_mapd_set
+#include <vector>         // vector
 
 class Solution {
-    public:
-        int removeDuplicates(std::vector<int>& nums) {
-            int right = nums.size() - 1;
-            int previous = nums[0];
-            bool foundSecond = false;
+   public:
+    int removeDuplicates(std::vector<int>& nums) {
+        std::unordered_map<int, int> count;
+        int left = 0, right = nums.size();
 
-            for (int left = 1; left < nums.size(); left++) {
-                if (nums[left] != nums[left-1]) {
-                    previous = nums[left];
-                    foundSecond = false;
-                    continue;
-                }
+        while (left < right) {
+            count[nums[left]]++;
 
-                if (!foundSecond) {
-                    foundSecond = true;
-                    continue;
-                }
-
-                nums.erase(nums.begin() + left);
-                left--;
-                right--;
+            if (count[nums[left]] <= 2) {
+                left++;
+                continue;
             }
 
-            return right + 1;
+            count[nums[left]]--;
+            nums.erase(nums.begin() + left);
+            right--;
         }
+
+        return right;
+    }
 };
