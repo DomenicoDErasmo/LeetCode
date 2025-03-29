@@ -1,17 +1,17 @@
-#include <vector>  //vector
+#include <vector>  // vector
 
 class NumArray {
    public:
     NumArray(std::vector<int>& nums) {
-        std::vector<int> toBuildPrefixSum = {nums.front()};
-        for (int i = 1; i < nums.size(); i++) {
-            toBuildPrefixSum.push_back(toBuildPrefixSum[i - 1] + nums[i]);
+        std::vector<int> initPrefixSum = {0};
+        for (int num : nums) {
+            initPrefixSum.push_back(num + initPrefixSum.back());
         }
-        prefixSum = toBuildPrefixSum;
+        prefixSum = initPrefixSum;
     }
 
     int sumRange(int left, int right) {
-        return prefixSum[right] - (left == 0 ? 0 : prefixSum[left - 1]);
+        return prefixSum[right + 1] - prefixSum[left];
     }
 
    private:
