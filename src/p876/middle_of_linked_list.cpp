@@ -7,14 +7,14 @@ struct ListNode {
 };
 
 class Solution {
-   public:
-    ListNode *middleNode(ListNode *head) {
-        ListNode *slow = head, *fast = head;
-        while (fast && fast->next) {
-            fast = fast->next->next;
-            slow = slow->next;
-        }
-
-        return slow;
-    }
-};
+    public:
+     ListNode *middleNode(ListNode *head) {
+         ListNode *slow = head, *fast = head;
+         while (fast && fast->next) {
+             slow = slow->next;
+             fast = fast->next->next;
+         }
+         return slow;
+     }
+ };
+ 
