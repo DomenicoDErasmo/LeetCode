@@ -1,27 +1,30 @@
-#include <iostream>
-#include <vector>
+#include <iostream>  // cout
+#include <vector>    // vector
 
 class Solution {
-public:
-  int removeDuplicates(std::vector<int> &nums) {
-    int current_nums = 1;
+   public:
+    int removeDuplicates(std::vector<int> &nums) {
+        int left = 0, right = nums.size() - 1, result = nums.size() - 1;
 
-    for (int i = 1; i < nums.size(); i++) {
-      if (nums[i] != nums[i - 1]) {
-        nums[current_nums] = nums[i];
-        current_nums++;
-      }
+        while (left < right) {
+            if (nums[left] != nums[left + 1]) {
+                left++;
+                continue;
+            }
+            right--;
+            result--;
+            nums.erase(nums.begin() + (left + 1));
+        }
+
+        return result + 1;
     }
-
-    return current_nums;
-  }
 };
 
 int main() {
-  Solution solution;
-  std::vector<int> nums{1, 1, 2};
-  int result = solution.removeDuplicates(nums);
-  if (result != 2) {
-    std::cout << "Failed.\n";
-  }
+    Solution solution;
+    std::vector<int> nums{1, 1, 2};
+    int result = solution.removeDuplicates(nums);
+    if (result != 2) {
+        std::cout << "Failed.\n";
+    }
 }
