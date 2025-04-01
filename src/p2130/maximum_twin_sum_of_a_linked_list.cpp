@@ -1,4 +1,5 @@
-#include <vector>  // max, vector
+#include <algorithm>  // max
+#include <optional>   // optional
 
 struct ListNode {
     int val;
@@ -11,24 +12,40 @@ struct ListNode {
 class Solution {
    public:
     int pairSum(ListNode *head) {
-        std::vector<int> values = fromList(head);
-        int result = 0, left = 0, right = values.size() - 1;
-        while (left < right) {
-            result = std::max(result, values[left] + values[right]);
-            left++;
-            right--;
+        // get mid with fast-slow
+        ListNode *mid = middle(head);
+        // reverse first half of linked list
+        ListNode *reversedHead = reverseUpTo(head, mid);
+        // use two pointers to traverse from mid to head and mid->next to end
+        std::optional<int> maxSum = std::nullopt;
+        while (reversedHead && mid) {
+            int currentSum = mid->val + reversedHead->val;
+            maxSum = maxSum.has_value() ? std::max(maxSum.value(), currentSum)
+                                        : currentSum;
+            reversedHead = reversedHead->next;
+            mid = mid->next;
         }
-        return result;
+        return maxSum.value_or(-1);
     }
 
    private:
-    std::vector<int> fromList(ListNode *head) {
-        std::vector<int> result;
-        ListNode *temp = head;
-        while (temp) {
-            result.push_back(temp->val);
-            temp = temp->next;
+    ListNode *middle(ListNode *head) {
+        ListNode *slow = head, *fast = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        return result;
+        return slow;
+    }
+
+    ListNode *reverseUpTo(ListNode *head, ListNode *end) {
+        ListNode *prev = nullptr, *current = head;
+        while (current != end) {
+            ListNode *next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
     }
 };
